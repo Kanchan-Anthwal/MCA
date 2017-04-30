@@ -1,0 +1,21 @@
+{
+  "name": "rightnmow",
+  "version": "1.0.0",
+  "description": "Webservice for Ionic App",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "Kanchan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26",
+    "morgan": "^1.8.1",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7"
+  }
+}
