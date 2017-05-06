@@ -1,9 +1,0 @@
-{
-  "hostname":"localhost",
-  "port":4004,
-  "dbAddress":"mongodb://127.0.0.1",
-  "dbPort":"27017",
-  "dbName":"RightNow"
-
-
-}

@@ -15,7 +15,12 @@
     "express": "^4.15.2",
     "mongodb": "^2.2.26",
     "morgan": "^1.8.1",
+    "nodemailer": "^4.0.1",
+    "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^1.11.0",
-    "path": "^0.12.7"
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "shortid": "^2.2.8",
+    "simple-node-logger": "^0.93.21"
   }
 }

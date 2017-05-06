@@ -1,18 +1,24 @@
 /**
  * Created by kanchan on 4/30/2017.
  */
+
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config=require('./config.json');
-var app = express();
+global.configFile=require('./utilities/config.json');
 var MongoClient=require('mongodb').MongoClient;
-
+var user=require('./routes/user');
+var os = require('os');
+var fs = require('fs');
+global.emailFile=require('./utilities/email');
+var app = express();
+global.dirPath=__dirname;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -20,31 +26,52 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    // var err = new Error('Not Found');
+    // err.status = 404;
+    next();
 });
 
-app.listen(config.port, function() {
+app.use("/",user);
 
-    console.log('App listening at http://%s:%s', config.hostname, config.port);
+app.listen(configFile.port, function() {
+
+    console.log('App listening at http://%s:%s', configFile.hostname, configFile.port);
 });
+if (!fs.existsSync(__dirname + '\\logs')){
+    console.log("dirr not exist..make dir>>");
+    fs.mkdirSync(__dirname + '\\logs');
 
-MongoClient.connect(config.dbAddress+":"+config.dbPort+"/"+config.dbName, function(err, database) {
+}
+if (os.platform().indexOf('win') > -1){
+    console.log("create lod dir>>>",__dirname + '\\logs');
 
-    if(err){
+    var opts = {
+        logDirectory: __dirname + '\\logs',
+        fileNamePattern: 'votwlogs.log',
+        dateFormat: 'YYYY.MM.DD'
+    };
+}
+else {
+    var opts = {
+        logDirectory: __dirname + '/logs',
+        fileNamePattern: 'votwlogs.log',
+        dateFormat: 'YYYY.MM.DD'
+    };
+};
+var log = require('simple-node-logger').createRollingFileLogger(opts);
 
-        console.log("Error connection database "+err);
+// var db=MongoClient.connect(config.dbAddress+":"+config.dbPort+"/"+config.dbName, function(err, database) {
+//     if(err)
+//         console.log("Error connection database "+err);
+//     else
+//         console.log("Db connected ");
+// });
 
-    }else{
-        console.log("Db connected ");
-
-
-
-    }
-
+process.on('uncaughtException', function(err) {
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+    console.error(err.stack);
+    log.error('Exception:j ' + err.stack);
 });
 
 
