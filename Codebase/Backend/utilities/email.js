@@ -28,7 +28,7 @@ var Email={
 
          mailOptions.html=html;
 
-         console.log("llllll");
+         console.log("llllll",html);
          transporter.sendMail(mailOptions, function(error, info){
              if (error) {
                  reject(error)

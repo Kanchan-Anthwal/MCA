@@ -58,7 +58,7 @@ else {
         fileNamePattern: 'votwlogs.log',
         dateFormat: 'YYYY.MM.DD'
     };
-};
+}
 var log = require('simple-node-logger').createRollingFileLogger(opts);
 
 // var db=MongoClient.connect(config.dbAddress+":"+config.dbPort+"/"+config.dbName, function(err, database) {

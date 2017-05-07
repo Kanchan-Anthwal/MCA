@@ -13,7 +13,9 @@ MongoClient.connect(config.dbAddress+":"+config.dbPort+"/"+config.dbName, functi
     else{
         console.log("Db connected ");
         userCollection=database.collection(config.userCollection);
-        userCollection.createIndex({password:""},{unique:true});
+
+        //Below line is used to create index
+        // userCollection.createIndex({password:""},{unique:true});
 
     }
 });
@@ -23,25 +25,51 @@ var DbUtility={
               console.log("modelsssss");
           userCollection.insert(data, function(err, result) {
                 if(err){
-                    reject({status:false,results:[err]});
+                    reject(err);
                 }
                 else{
-                    resolve({status:true,results:[result]});
+                    resolve(result);
                 }
 
             });
         })
 
     },
+    find:function(data){
+        console.log(">>>werty>>>>>");
+
+        return new Promise(function(resolve,reject){
+
+            console.log("find model>>>>",req.params.emailid);
+            userCollection.findOne({emailid:data.emailid}, function(err, result) {
+
+                // console.log("find model err>>>>",err,"********",result);
+
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+
+            });
+        });
+
+    },
+
     update:function(data){
         return new Promise(function(resolve,reject){
 
-            userCollection.update(data, function(err, result) {
+            console.log("update model>>>>",data);
+            userCollection.findOneAndUpdate({emailid:data.emailid},{$set:{password:data.password}}, function(err, result) {
+
+                console.log("update model err>>>>",err,"********",result);
+
                 if(err){
-                    reject({status:false,results:[err]});
+                    reject(err);
                 }
                 else{
-                    resolve({status:true,results:[result]});
+                    resolve(result);
                 }
 
             });
@@ -52,5 +80,6 @@ var DbUtility={
 
 module.exports={
     addUser: DbUtility.add,
-    updateUser:DbUtility.update
+    updateUser:DbUtility.update,
+    getUser:DbUtility.find
 };
