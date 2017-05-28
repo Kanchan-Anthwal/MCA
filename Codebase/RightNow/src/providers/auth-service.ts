@@ -42,7 +42,7 @@ export class AuthService {
       return Observable.create(observer=>{
 
         var access;
-        let url = AppSettings.API_ENDPOINT+'login/'+credentials.emailid+"/"+credentials.password;
+        let url = AppSettings.USER_LOGIN+credentials.emailid+"/"+credentials.password;
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
         this.http.get(url).map(res => res.json()).subscribe(
@@ -57,7 +57,14 @@ export class AuthService {
             observer.next(access);
             observer.complete();
 
+          },
+          error=>{
+            console.log("error login>>>>>");
+            observer.next(false);
+            observer.complete();
+
           });
+
 
         });
     }
@@ -71,7 +78,7 @@ export class AuthService {
       // At this point store the credentials to your backend!
       return Observable.create(observer=>{
 
-        let url = AppSettings.API_ENDPOINT+'register';
+        let url = AppSettings.USER_REGISTER;
         var access;
         let body = JSON.stringify(credentials);
         // let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -81,6 +88,7 @@ export class AuthService {
 
         this.http.post(url,body,{headers}).map(res=>res.json()).subscribe(
           data=>{
+            console.log("resisterrr>>>>",data);
             if (data.status){
               access = true;
             }else{
@@ -88,6 +96,12 @@ export class AuthService {
             }
             observer.next(access);
             observer.complete();
+          },
+
+          error=>{
+            observer.next(false);
+            observer.complete();
+
           }
         );
 

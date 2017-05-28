@@ -6,7 +6,8 @@
   "dbName":"RightNow",
   "emailid":"kanchan@visasoftheworld.com",
   "password":"Dreams#8",
-  "userCollection":"Users"
+  "userCollection":"Users",
+  "categoryCollection":"Categories"
 
 
 }

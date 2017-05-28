@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 global.configFile=require('./utilities/config.json');
 var MongoClient=require('mongodb').MongoClient;
 var user=require('./routes/user');
+var category=require('./routes/category');
+
 var os = require('os');
 var fs = require('fs');
 global.emailFile=require('./utilities/email');
@@ -56,7 +58,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use("/",user);
+app.use("/user",user);
+app.use("/category",category);
+
 
 app.listen(configFile.port, function() {
 

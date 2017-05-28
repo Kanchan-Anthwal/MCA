@@ -187,17 +187,19 @@ var loginUser = function (req) {
                     status: true,
                     message: "User Fetched Successfully",
                     result: [response]
-                }
+                };
+                resolve(res);
             } else {
                 res = {
-                    status: true,
+                    status: false,
                     message: "No User Found",
                     result: [response]
-                }
+                };
+                reject(res);
             }
 
 
-            resolve(res);
+
         }, function (err) {
             res = {
                 status: false,
