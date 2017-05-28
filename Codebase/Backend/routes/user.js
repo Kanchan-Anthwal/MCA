@@ -15,7 +15,7 @@ router.post('/register',function (req,res) {
 
     userService.addUser(req).then(function(response){
 
-        console.log("cmngttt here...");
+        console.log("Register api...",req.body);
 
         res.status(201).json(response);
 
@@ -42,17 +42,17 @@ router.put('/forgotpass/:emailid',function (req,res) {
 
     userService.forgotPassword(req).then(function(response){
 
-        res.status(201).json(response);
+        res.status(200).json(response);
 
     },function(err){
         res.status(500).json(err);
     })
 
 });
-router.get('/:emailid',function (req,res) {
+router.get('/login/:emailid/:password',function (req,res) {
 
-
-    userService.getUser(req).then(function(response){
+console.log("Login Api called>>>",req.params);
+    userService.loginUser(req).then(function(response){
 
         res.status(200).json(response);
 

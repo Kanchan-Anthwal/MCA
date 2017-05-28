@@ -40,10 +40,15 @@ var DbUtility={
 
         return new Promise(function(resolve,reject){
 
-            console.log("find model>>>>",req.params.emailid);
-            userCollection.findOne({emailid:data.emailid}, function(err, result) {
+            console.log("find model>>>>",data.emailid);
+            var obj={emailid:data.emailid};
+            if(data.password){
+                obj.password=data.password;
+            }
 
-                // console.log("find model err>>>>",err,"********",result);
+            userCollection.findOne(obj, function(err, result) {
+
+                console.log("find model err>>>>",err,"********",result);
 
                 if(err){
                     reject(err);

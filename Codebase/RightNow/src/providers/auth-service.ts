@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-// import { Http } from '@angular/http';
+import { Http,Headers } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-
+import {AppSettings} from '../global';
 import 'rxjs/add/operator/map';
+
 
 // import {Observable} from 'rxjs'
 
@@ -10,12 +11,12 @@ import 'rxjs/add/operator/map';
 export class User{
 
   name: string;
-  email: string;
+  emailid: string;
 
-  constructor(name: string,email:string){
+  constructor(name: string,emailid:string){
 
     this.name=name;
-    this.email=email;
+    this.emailid=emailid;
   }
 }
 
@@ -23,42 +24,82 @@ export class User{
 @Injectable()
 export class AuthService {
 
-  /*constructor(public http: Http) {
+  constructor(public http: Http) {
     console.log('Hello AuthService Provider');
-  }*/
+  }
 
 
   currentUser: User;
+
+
   public login(credentials){
     console.log("login..........>>>>>>....",credentials);
-    if(credentials.email==null || credentials.password==null){
+    if(credentials.emailid==null || credentials.password==null){
 
       return Observable.throw("Please Insert credentials..");
 
     }else {
-
       return Observable.create(observer=>{
-console.log("passsss....");
-        var access=(credentials.password=="pass" && credentials.email=="email");
-        this.currentUser=new User('Kanchan','kanchan@gmail.com');
-        observer.next(access);
-        observer.complete();
 
-        }
+        var access;
+        let url = AppSettings.API_ENDPOINT+'login/'+credentials.emailid+"/"+credentials.password;
+        let headers = new Headers({ 'Content-Type': 'application/json' });
 
-      );
+        this.http.get(url).map(res => res.json()).subscribe(
+          data => {
+            console.log("data>>>>",data);
+            if (data.status){
+              this.currentUser = new User(data.username, data.email);
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(access);
+            observer.complete();
+
+          });
+
+        });
     }
   }
 
   public register(credentials){
-    if (credentials.email === null || credentials.password === null) {
+    console.log("@@@@@@@@@@",credentials);
+    if (credentials.emailid === null) {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!
-      return Observable.create(observer => {
-        observer.next(true);
-        observer.complete();
+      return Observable.create(observer=>{
+
+        let url = AppSettings.API_ENDPOINT+'register';
+        var access;
+        let body = JSON.stringify(credentials);
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.post(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(access);
+            observer.complete();
+          }
+        );
+
+
       });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
     }
 
   }

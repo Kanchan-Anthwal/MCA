@@ -17,9 +17,10 @@ import {NavController,AlertController,LoadingController,Loading,IonicPage} from 
 
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  registerCredentials = { emailid: '', password: '' };
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController) { }
 
   public createAccount() {
     console.log(">>>>>>>>>>>");
@@ -31,7 +32,7 @@ export class LoginPage {
     this.auth.login(this.registerCredentials).subscribe(allowed => {
         console.log("passsss..uuuu..");
         if (allowed) {
-          console.log("home hhhh");
+          console.log("home hhhh",allowed);
           this.nav.push('HomePage');
         } else {
           console.log("why ????");

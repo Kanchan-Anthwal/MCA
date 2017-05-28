@@ -8,6 +8,7 @@ var utility = require('../utilities/utility');
 
 var addUser = function (req) {
 
+    console.log("cmng here.yyyyyyyyyyyyyyyy..",req.body);
     return new Promise(function (resolve, reject) {
 
         console.log("cmng here...");
@@ -45,13 +46,22 @@ var addUser = function (req) {
 
             });
 
-        }, function (err) {
-            res = {
-                status: false,
-                message: "User Cannot be Created",
-                result: [err]
-            };
+            }, function (err) {
 
+            res = {
+                status: false
+
+            };
+            if(err && err.errmsg.indexOf("duplicate key error")!=-1){
+
+             res.message= "User with given emailid already exist";
+
+            }else {
+
+                res.message= "User Cannot be Created";
+            }
+
+            res.result= [err];
             reject(res);
 
         });
@@ -71,6 +81,7 @@ var changePassword = function (req) {
 
 
         userModel.updateUser(data).then(function (response) {
+            console.log("response",response);
 
             if (response.value) {
 
@@ -100,13 +111,14 @@ var changePassword = function (req) {
 
                 });
             } else {
+                console.log("ppppppppp");
                 res = {
-                    status: true,
+                    status:false,
                     message: "No User Found",
                     result: [response]
                 };
 
-                resolve(res);
+                reject(res);
             }
 
         }, function (err) {
@@ -127,7 +139,7 @@ var getUser = function (req) {
 
     return new Promise(function (resolve, reject) {
 
-        console.log("cmng here..updateUser.");
+        console.log("cmng here..get.", req.params.emailid);
         var res;
 
         userModel.getUser({emailid: req.params.emailid}).then(function (response) {
@@ -162,9 +174,114 @@ var getUser = function (req) {
     })
 
 };
+var loginUser = function (req) {
+
+    return new Promise(function (resolve, reject) {
+
+        console.log("cmng here..get.", req.params.emailid);
+        var res;
+
+        userModel.getUser({emailid: req.params.emailid,password: req.params.password}).then(function (response) {
+            if (response) {
+                res = {
+                    status: true,
+                    message: "User Fetched Successfully",
+                    result: [response]
+                }
+            } else {
+                res = {
+                    status: true,
+                    message: "No User Found",
+                    result: [response]
+                }
+            }
+
+
+            resolve(res);
+        }, function (err) {
+            res = {
+                status: false,
+                message: "User Cannot Login ",
+                result: [err]
+            };
+
+            console.log("^^^^^^^^^^^yyyyyyy^^^^^");
+            reject(res);
+
+        });
+
+    })
+
+};
+var forgotPassword=function(req){
+    return new Promise(function (resolve, reject) {
+
+        console.log("cmng here..updateUser.");
+        var res;
+
+        var data = {emailid: req.params.emailid, password: utility.AutoGenerateId()};
+
+
+        userModel.updateUser(data).then(function (response) {
+            console.log("response",response);
+
+            if (response.value) {
+
+                var mailOptions = {
+                    to: data.emailid,
+                    subject: 'RightNow App Forgot Password Email'
+                };
+
+                emailFile.sendMail(mailOptions, "forgotPassword.ejs", {forgotPassword: data.password}).then(function (response) {
+
+                    res = {
+                        status: true,
+                        message: "Password Set Successfully and Mail Sent to the registered EmailId",
+                        result: [response]
+                    };
+
+                    resolve(res);
+
+
+                }, function (err) {
+                    res = {
+                        status: false,
+                        message: "Mail Sending Failed",
+                        result: [err]
+                    };
+                    reject(res);
+
+                });
+            } else {
+                console.log("ppppppppp");
+                res = {
+                    status:false,
+                    message: "No User Found",
+                    result: [response]
+                };
+
+                reject(res);
+            }
+
+        }, function (err) {
+            res = {
+                status: false,
+                message: "Password Set Successfully",
+                result: [err]
+            };
+
+            reject(res);
+
+        });
+
+    })
+
+};
 module.exports = {
 
     addUser: addUser,
     changePassword: changePassword,
-    getUser: getUser
+    forgotPassword:forgotPassword,
+    getUser: getUser,
+    loginUser:loginUser
 };
