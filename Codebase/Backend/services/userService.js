@@ -124,7 +124,7 @@ var changePassword = function (req) {
         }, function (err) {
             res = {
                 status: false,
-                message: "Password Changed Successfully",
+                message: "Password Cannot Be Changed",
                 result: [err]
             };
 
@@ -148,17 +148,19 @@ var getUser = function (req) {
                     status: true,
                     message: "User Fetched Successfully",
                     result: [response]
-                }
+                };
+                resolve(res);
             } else {
                 res = {
-                    status: true,
+                    status: false,
                     message: "No User Found",
                     result: [response]
-                }
+                };
+                reject(res);
             }
 
 
-            resolve(res);
+
         }, function (err) {
             res = {
                 status: false,
@@ -268,7 +270,7 @@ var forgotPassword=function(req){
         }, function (err) {
             res = {
                 status: false,
-                message: "Password Set Successfully",
+                message: "Password cannot Be Set",
                 result: [err]
             };
 
