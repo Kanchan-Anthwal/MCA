@@ -8,35 +8,37 @@ import  { AuthService } from '../../providers/auth-service';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()
+@IonicPage({name:'ForgotPasswordPage'})
 @Component({
-  selector: 'page-register',
-  templateUrl: 'register.html',
+  selector: 'page-forgotpassword',
+  templateUrl: 'forgotpassword.html',
 })
-export class RegisterPage {
+export class ForgotPasswordPage {
+
   createSuccess = false;
-  registerCredentials = { emailid: ''};
+  emailid='';// = { emailid: ''};
 
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController) { }
 
   public register() {
-    this.auth.register(this.registerCredentials).subscribe(response => {
-      console.log("register.ts>>>>",response);
+    console.log("emailid>>>>",this.emailid);
+    this.auth.forgotPassword(this.emailid).subscribe(response => {
+        console.log("forgotPassword.ts>>>>",response);
         if (response.status){
-          console.log("response success>>register.ts",response);
+          console.log("response success>>forgotPassword.ts",response);
 
-      this.createSuccess = true;
+          this.createSuccess = true;
           this.showPopup("Success", response.message);
           // this.nav.push('LoginPage')
         } else {
-      console.log("response fail>>register.ts",response);
+          console.log("response fail>>forgotPassword.ts",response);
           this.createSuccess = false;
           this.showPopup("Error", response.message);
         }
       }/*,
-      error => {
-        this.showPopup("Error", error);
-      });*/
+       error => {
+       this.showPopup("Error", error);
+       });*/
     )
   }
 

@@ -33,7 +33,6 @@ export class AuthService {
 
 
   public login(credentials){
-    console.log("login..........>>>>>>....",credentials);
     if(credentials.emailid==null || credentials.password==null){
 
       return Observable.throw("Please Insert credentials..");
@@ -47,20 +46,20 @@ export class AuthService {
 
         this.http.get(url).map(res => res.json()).subscribe(
           data => {
-            console.log("data>>>>",data);
+            console.log("login api response, data=>",data);
             if (data.status){
-              this.currentUser = new User(data.username, data.email);
+              this.currentUser = new User(data.username, data.result[0].emailid);
               access = true;
             }else{
               access=false;
             }
-            observer.next(access);
+            observer.next(data);
             observer.complete();
 
           },
           error=>{
-            console.log("error login>>>>>");
-            observer.next(false);
+            console.log("login api response, error=>",JSON.parse(error._body));
+            observer.next(JSON.parse(error._body));
             observer.complete();
 
           });
@@ -99,7 +98,9 @@ export class AuthService {
           },
 
           error=>{
-            observer.next(false);
+            console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
             observer.complete();
 
           }
@@ -118,6 +119,57 @@ export class AuthService {
 
   }
 
+
+
+  public forgotPassword(credentials){
+    console.log("@@@@@@@@@@",credentials);
+    if (credentials.emailid === null) {
+      return Observable.throw("Please insert credentials");
+    } else {
+      // At this point store the credentials to your backend!
+      return Observable.create(observer=>{
+
+        let url = AppSettings.USER_FORGOT_PASSWORD+credentials.emailid;
+        var access;
+        let body = {};
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.put(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            console.log("forgotPassword>>>>",data);
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(access);
+            observer.complete();
+          },
+
+          error=>{
+            console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
+            observer.complete();
+
+          }
+        );
+
+
+      });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
+    }
+
+  }
 
   public getUserInfo() : User {
     return this.currentUser;

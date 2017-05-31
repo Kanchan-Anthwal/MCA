@@ -9,7 +9,7 @@ import {NavController,AlertController,LoadingController,Loading,IonicPage} from 
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()
+@IonicPage({name:'LoginPage'})
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -27,21 +27,24 @@ export class LoginPage {
     this.nav.push('RegisterPage');
   }
 
+  public forgotPassword() {
+    console.log(">>>>>>>>>>>");
+    this.nav.push('ForgotPasswordPage');
+  }
+
   public login() {
     this.showLoading();
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-        console.log("passsss..uuuu..");
-        if (allowed) {
-          console.log("home hhhh",allowed);
+    this.auth.login(this.registerCredentials).subscribe(response => {
+        console.log("login.ts>>>>",response);
+        if (response.status) {
+          console.log("response success>>login.ts",response);
           this.nav.push('HomePage');
         } else {
-          console.log("why ????");
-          this.showError("Access Denied");
+          console.log("response fail>>login.ts",response);
+          this.showError(response.message);
         }
-      },
-      error => {
-        this.showError(error);
-      });
+      })
+
   }
 
   showLoading() {
@@ -56,7 +59,7 @@ export class LoginPage {
     this.loading.dismiss();
 
     let alert = this.alertCtrl.create({
-      title: 'Fail',
+      title: 'Error',
       subTitle: text,
       buttons: ['OK']
     });

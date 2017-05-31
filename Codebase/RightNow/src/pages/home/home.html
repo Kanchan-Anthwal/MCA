@@ -3,7 +3,11 @@
     <ion-title>
       Member Area
     </ion-title>
-    <ion-buttons end>
+    <ion-buttons >
+      <button ion-button (click)="changePassword()">
+        Change Password
+      </button>
+
       <button ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
@@ -12,6 +16,17 @@
 </ion-header>
 
 <ion-content class="home" padding>
-  <h3>Welcome inside, {{username}}!</h3>
-  Your Email is: {{email}}
+  <h3>Welcome insidaaae, {{emailid}}</h3>
+
+
+<ion-scroll style="height: 2000px">
+{{myItems}}
+  <ion-list *ngFor="let type of myItems">
+  <ion-item>
+    <!--<ion-icon name="leaf" item-left></ion-icon>-->
+    {{type}}
+    <!--<ion-icon name= item-right></ion-icon>-->
+  </ion-item>
+</ion-list>
+</ion-scroll>
 </ion-content>
