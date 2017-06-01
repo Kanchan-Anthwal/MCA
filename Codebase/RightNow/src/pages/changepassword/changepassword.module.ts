@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { Changepassword } from './changepassword';
+import { ChangePasswordPage } from './changepassword';
 
 @NgModule({
   declarations: [
-    Changepassword,
+    ChangePasswordPage,
   ],
   imports: [
-    IonicPageModule.forChild(Changepassword),
+    IonicPageModule.forChild(ChangePasswordPage),
   ],
   exports: [
-    Changepassword
+    ChangePasswordPage
   ]
 })
 export class ChangepasswordModule {}

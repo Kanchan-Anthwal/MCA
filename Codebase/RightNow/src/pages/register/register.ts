@@ -8,7 +8,7 @@ import  { AuthService } from '../../providers/auth-service';
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage()
+@IonicPage({name:'RegisterPage'})
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
@@ -29,7 +29,7 @@ export class RegisterPage {
           this.showPopup("Success", response.message);
           // this.nav.push('LoginPage')
         } else {
-      console.log("response fail>>register.ts",response);
+          console.log("falseeeee");
           this.createSuccess = false;
           this.showPopup("Error", response.message);
         }

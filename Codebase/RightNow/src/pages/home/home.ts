@@ -26,6 +26,10 @@ export class HomePage {
   public onItemTap(args) {
     console.log("------------------------ ItemTapped: " + args.index);
   }
+
+  public changePassword(){
+    this.nav.push('ChangePasswordPage');
+  }
   public logout() {
     this.auth.logout().subscribe(succ => {
       this.nav.setRoot('LoginPage')

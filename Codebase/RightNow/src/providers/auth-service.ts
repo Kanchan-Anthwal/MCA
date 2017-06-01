@@ -121,15 +121,15 @@ export class AuthService {
 
 
 
-  public forgotPassword(credentials){
-    console.log("@@@@@@@@@@",credentials);
-    if (credentials.emailid === null) {
+  public forgotPassword(emailid){
+    console.log("@@@@@@@@@@",emailid);
+    if (emailid === null) {
       return Observable.throw("Please insert credentials");
     } else {
       // At this point store the credentials to your backend!
       return Observable.create(observer=>{
 
-        let url = AppSettings.USER_FORGOT_PASSWORD+credentials.emailid;
+        let url = AppSettings.USER_FORGOT_PASSWORD+emailid;
         var access;
         let body = {};
         // let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -145,12 +145,61 @@ export class AuthService {
             }else{
               access=false;
             }
-            observer.next(access);
+            observer.next(data);
             observer.complete();
           },
 
           error=>{
             console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
+            observer.complete();
+
+          }
+        );
+
+
+      });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
+    }
+
+  }
+  public changePassword(password){
+    console.log("@@@@@@@@@@",password);
+    if (password === null) {
+      return Observable.throw("Please insert credentials");
+    } else {
+      // At this point store the credentials to your backend!
+      return Observable.create(observer=>{
+
+        let url = AppSettings.USER_CHANGE_PASSWORD+this.currentUser.emailid;
+        var access;
+        let body = {password:password};
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.put(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            console.log("changePassword>>>>",data);
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(data);
+            observer.complete();
+          },
+
+          error=>{
+            console.log("changepasword  api response, error=>",JSON.parse(error._body));
 
             observer.next(JSON.parse(error._body));
             observer.complete();
