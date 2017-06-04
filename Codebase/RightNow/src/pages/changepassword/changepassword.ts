@@ -26,7 +26,8 @@ export class ChangePasswordPage {
   showHidePassLabel='Show Password';
 
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController,private loadingCtrl: LoadingController) { }
+  constructor(private nav: NavController, private auth: AuthService,
+              private alertCtrl: AlertController,private loadingCtrl: LoadingController) { }
 
   showPassword(inputCurrentPassword,inputNewPassword,inputConfirmPassword){
       console.log("Hide/Show Password>>>>>",inputCurrentPassword.type);
@@ -85,7 +86,7 @@ export class ChangePasswordPage {
           // this.showPopup("Success", response.message);
           // this.nav.push('LoginPage')
           console.log("dismiss popupdddddddddddd ChangePassword//////////////.tts");
-          this.auth.setUserInfo(this.newPassword);
+          this.auth.setPassword(this.newPassword);
           this.showPopup("Success", response.message);
 
           this.loading.dismiss();

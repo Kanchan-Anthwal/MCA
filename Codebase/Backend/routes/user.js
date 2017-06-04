@@ -24,6 +24,34 @@ router.post('/register',function (req,res) {
     })
 
 });
+
+router.put('/subscribe/:emailid',function (req,res) {
+
+
+    userService.subscribe(req).then(function(response){
+
+        res.status(200).json(response);
+
+    },function(err){
+        res.status(500).json(err);
+    })
+
+});
+
+router.put('/unsubscribe/:emailid',function (req,res) {
+
+
+    userService.unSubscribe(req).then(function(response){
+
+        res.status(200).json(response);
+
+    },function(err){
+        res.status(500).json(err);
+    })
+
+});
+
+
 router.put('/changepass/:emailid',function (req,res) {
 
 

@@ -3,6 +3,8 @@ import {NavController,AlertController,LoadingController,Loading,IonicPage} from 
 import { AuthService } from '../../providers/auth-service';
 import {AppSettings} from '../../global';
 import { CategoryService } from '../../providers/category-service';
+import { PlatformLocation } from '@angular/common'
+
 
 
 
@@ -26,10 +28,19 @@ export class HomePage {
 
 
   constructor(private nav: NavController, private auth: AuthService, private category: CategoryService,private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController) {
+              private loadingCtrl: LoadingController,location: PlatformLocation) {
     let info = this.auth.getUserInfo();
     //console.log("home page>>",info);
     this.emailid = info['emailid'];
+
+    location.onPopState(() => {
+
+      this.getAllCategory();
+      // alert('pressed back!');
+
+    });
+
+    console.log("LOCATION>>>>",location);
 
     // this.myItems = [];
     // this.counter = 0;
@@ -39,6 +50,7 @@ export class HomePage {
     // }
 
     this.getAllCategory();
+
 
     if(this.emailid==AppSettings.ADMIN){
       this.hideAddCategoryBtn=false;

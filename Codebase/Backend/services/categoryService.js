@@ -51,8 +51,9 @@ var getCategoryByName = function (req) {
     return new Promise(function (resolve, reject) {
 
         var res;
-
-        categoryModel.getCategoryByName({name: req.params.name}).then(function (response) {
+var data={name: req.params.name};
+data.name=data.name.toLowerCase();
+        categoryModel.getCategoryByName().then(function (response) {
             if (response) {
                 res = {
                         status: true,
@@ -92,6 +93,8 @@ var addCategory = function (req) {
 
         var res;
 
+        var data=req.body;
+        data.name=data.name.toLowerCase();
         categoryModel.addCategory(req.body).then(function (response) {
             if (response) {
                 res = {
@@ -140,8 +143,10 @@ var deleteCategoryByName = function (req) {
     return new Promise(function (resolve, reject) {
 
         var res;
+        var data={name: req.params.name};
+        data.name=data.name.toLowerCase();
 
-        categoryModel.deleteCategoryByName({name: req.params.name}).then(function (response) {
+        categoryModel.deleteCategoryByName().then(function (response) {
             if (response.value) {
                 res = {
                     status: true,

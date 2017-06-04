@@ -5,9 +5,11 @@
   "dbPort":"27017",
   "dbName":"RightNow",
   "emailid":"rightnowapp2017@gmail.com",
-  "password":"Dreams#8",
+  "password":"Dreams#88",
   "userCollection":"Users",
-  "categoryCollection":"Categories"
+  "categoryCollection":"Categories",
+  "postCollection":"Posts"
+
 
 
 }

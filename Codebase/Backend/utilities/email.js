@@ -45,7 +45,35 @@ var Email={
 
 
 
-     }
+     },
+
+    sendMailToList:function (mailOptions,template,data) {
+        console.log("__dirname???",__dirname);
+            var compiled = ejs.compile(fs.readFileSync(dirPath + "/templates/"+template, 'utf8'));
+            var html = compiled(data);
+
+            mailOptions.html=html;
+
+            console.log("llllll",html);
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+
+                    console.error("error");
+                } else {
+                    console.info("error");
+
+
+                }
+            });
+
+
+
+
+
+
+
+
+    }
 
 };
 module.exports = Email;

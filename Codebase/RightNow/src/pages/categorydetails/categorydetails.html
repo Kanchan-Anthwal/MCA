@@ -8,12 +8,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>categorydetails</ion-title>
+    <ion-title>{{categoryName}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-content [hidden]="!subscribedBtn">
+
+    <button  ion-button end class="submit-btn" full type="submit"
+            (click)="subscribe()">Subscribe</button>
+
+
+    <div>To Avail This Service Please Subscribe</div>
+  </ion-content>
+
+
+  <ion-content [hidden]="subscribedBtn">
+    <button  ion-button end class="submit-btn" full type="submit"
+            (click)="unSubscribe()">Unsubscribe</button>
+
+    <button  ion-button end class="submit-btn" full type="submit"
+             (click)="createPost()">Add Post</button>
+
+  </ion-content>
+
+
 
 </ion-content>

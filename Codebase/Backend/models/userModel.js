@@ -80,11 +80,57 @@ var DbUtility={
             });
         })
 
-    }
+    },
+
+    updateAll:function(data){
+        return new Promise(function(resolve,reject){
+
+            console.log("update all...model>>>>",data);
+            userCollection.findOneAndUpdate({emailid:data.emailid},data, function(err, result) {
+
+                console.log("update model err>>>>",err,"********",result);
+
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+
+            });
+        })
+
+    },
+
+    findBy:function(data){
+        console.log(">>>findby>>>>>",data);
+
+        return new Promise(function(resolve,reject){
+
+
+
+            userCollection.find(data).toArray(function(err, result) {
+
+                console.log("find model err>>>>",err,"********",result);
+
+                if(err){
+                    reject(err);
+                }
+                else{
+                    resolve(result);
+                }
+
+            });
+        });
+
+    },
 };
 
 module.exports={
     addUser: DbUtility.add,
     updateUser:DbUtility.update,
-    getUser:DbUtility.find
+    getUser:DbUtility.find,
+    updateUserAll:DbUtility.updateAll,
+    findBy:DbUtility.findBy
+
 };

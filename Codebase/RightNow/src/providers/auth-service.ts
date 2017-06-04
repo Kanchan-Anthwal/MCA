@@ -125,7 +125,104 @@ export class AuthService {
 
   }
 
+  public subscribe(categoryName){
 
+    if (categoryName === null) {
+      return Observable.throw("Please insert categoryName");
+    } else {
+      // At this point store the credentials to your backend!
+      return Observable.create(observer=>{
+
+        let url = AppSettings.USER_SUBSCRIBE+this.currentUser.emailid;
+        var access;
+        let body = {categoryname:categoryName};
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.put(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            console.log("subscription>>>>",data);
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(data);
+            observer.complete();
+          },
+
+          error=>{
+            console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
+            observer.complete();
+
+          }
+        );
+
+
+      });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
+    }
+
+  }
+  public unSubscribe(categoryName){
+
+    if (categoryName === null) {
+      return Observable.throw("Please insert categoryName");
+    } else {
+      // At this point store the credentials to your backend!
+      return Observable.create(observer=>{
+
+        let url = AppSettings.USER_UNSUBSCRIBE+this.currentUser.emailid;
+        var access;
+        let body = {categoryname:categoryName};
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.put(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            console.log("subscription>>>>",data);
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(data);
+            observer.complete();
+          },
+
+          error=>{
+            console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
+            observer.complete();
+
+          }
+        );
+
+
+      });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
+    }
+
+  }
 
   public forgotPassword(emailid){
     console.log("@@@@@@@@@@",emailid);
@@ -229,11 +326,16 @@ export class AuthService {
   public getUserInfo() : User {
     return this.currentUser;
   }
-  public setUserInfo(password){
+  public setPassword(password){
     console.log("setting password after change>>>>>>",password);
     this.currentUser.password=password;
 
   }
+  public setSubscription(subscribed){
+    this.currentUser.subscribed=subscribed;
+
+  }
+
 
 
   public logout() {

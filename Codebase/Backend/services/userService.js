@@ -8,11 +8,12 @@ var utility = require('../utilities/utility');
 
 var addUser = function (req) {
 
-    console.log("cmng here.yyyyyyyyyyyyyyyy..",req.body);
+    console.log("cmng here.yyyyyyyyyyyyyyyy..", req.body);
     return new Promise(function (resolve, reject) {
 
         console.log("cmng here...");
-        var data = {emailid: req.body.emailid, name:req.body.name,password: utility.AutoGenerateId()};
+        var data = {emailid: req.body.emailid, name: req.body.name, password: utility.AutoGenerateId()};
+        data.emailid = data.emailid.toLocaleLowerCase();
         var res;
 
         userModel.addUser(data).then(function (response) {
@@ -46,22 +47,22 @@ var addUser = function (req) {
 
             });
 
-            }, function (err) {
+        }, function (err) {
 
             res = {
                 status: false
 
             };
-            if(err && err.errmsg.indexOf("duplicate key error")!=-1){
+            if (err && err.errmsg.indexOf("duplicate key error") != -1) {
 
-             res.message= "User with given emailid already exist";
+                res.message = "User with given emailid already exist";
 
-            }else {
+            } else {
 
-                res.message= "User Cannot be Created";
+                res.message = "User Cannot be Created";
             }
 
-            res.result= [err];
+            res.result = [err];
             reject(res);
 
         });
@@ -79,9 +80,10 @@ var changePassword = function (req) {
 
         var data = {emailid: req.params.emailid, password: req.body.password};
 
+        data.emailid = data.emailid.toLocaleLowerCase();
 
         userModel.updateUser(data).then(function (response) {
-            console.log("response",response);
+            console.log("response", response);
 
             if (response.value) {
 
@@ -113,7 +115,7 @@ var changePassword = function (req) {
             } else {
                 console.log("ppppppppp");
                 res = {
-                    status:false,
+                    status: false,
                     message: "No User Found",
                     result: [response]
                 };
@@ -141,8 +143,10 @@ var getUser = function (req) {
 
         console.log("cmng here..get.", req.params.emailid);
         var res;
+        var data = {emailid: req.params.emailid};
+        data.emailid = data.emailid.toLocaleLowerCase();
 
-        userModel.getUser({emailid: req.params.emailid}).then(function (response) {
+        userModel.getUser(data).then(function (response) {
             if (response) {
                 res = {
                     status: true,
@@ -158,7 +162,6 @@ var getUser = function (req) {
                 };
                 reject(res);
             }
-
 
 
         }, function (err) {
@@ -182,8 +185,10 @@ var loginUser = function (req) {
 
         console.log("cmng here..get.", req.params.emailid);
         var res;
+        var data = {emailid: req.params.emailid, password: req.params.password};
+        data.emailid = data.emailid.toLowerCase();
 
-        userModel.getUser({emailid: req.params.emailid,password: req.params.password}).then(function (response) {
+        userModel.getUser(data).then(function (response) {
             if (response) {
                 res = {
                     status: true,
@@ -201,7 +206,6 @@ var loginUser = function (req) {
             }
 
 
-
         }, function (err) {
             res = {
                 status: false,
@@ -217,7 +221,7 @@ var loginUser = function (req) {
     })
 
 };
-var forgotPassword=function(req){
+var forgotPassword = function (req) {
     return new Promise(function (resolve, reject) {
 
         console.log("cmng here..updateUser.");
@@ -225,9 +229,9 @@ var forgotPassword=function(req){
 
         var data = {emailid: req.params.emailid, password: utility.AutoGenerateId()};
 
-
+        data.emailid = data.emailid.toLowerCase();
         userModel.updateUser(data).then(function (response) {
-            console.log("response",response);
+            console.log("response", response);
 
             if (response.value) {
 
@@ -259,7 +263,7 @@ var forgotPassword=function(req){
             } else {
                 console.log("ppppppppp");
                 res = {
-                    status:false,
+                    status: false,
                     message: "No User Found",
                     result: [response]
                 };
@@ -281,11 +285,272 @@ var forgotPassword=function(req){
     })
 
 };
+var subscribe = function (req) {
+    return new Promise(function (resolve, reject) {
+
+        console.log("cmng here..updateUser.");
+        var res;
+
+        var data = {emailid: req.params.emailid, categoryname: req.body.categoryname};
+
+        data.emailid = data.emailid.toLowerCase();
+
+
+        userModel.getUser(data).then(function (response) {
+            console.log("response", response);
+            // return;
+
+            if (response) {
+
+                if (response.subscribed) {
+
+                    console.log('SUBSCRIBED');
+                    var user = response;
+
+                    user.subscribed.push(data.categoryname);
+
+
+                    userModel.updateUserAll(user).then(function (response) {
+
+                        var mailOptions = {
+                            to: data.emailid,
+                            subject: 'Service Subscribed Email'
+                        };
+
+                        emailFile.sendMail(mailOptions, "subscribe.ejs", {categoryname: data.categoryname,username:user.name}).
+                        then(function (response) {
+
+                            res = {
+                                status: true,
+                                message: "Subscribed Successfully and Mail Sent to the registered EmailId",
+                                result: [response]
+                            };
+
+                            resolve(res);
+
+
+                        }, function (err) {
+                            res = {
+                                status: false,
+                                message: "Mail Sending Failed",
+                                result: [err]
+                            };
+                            reject(res);
+
+                        });
+
+                    }, function (err) {
+                        res = {
+                            status: false,
+                            message: "Cannot be Subscribed",
+                            result: [err]
+                        };
+
+                        reject(res);
+
+                    });
+
+
+                } else {
+
+                    console.log('SUBSCRIBED');
+
+                    var user = response;
+                    var subscribe=[data.categoryname];
+                    user.subscribed=subscribe;
+
+console.log("user updated>>",user);
+// return;
+                    userModel.updateUserAll(user).then(function (response) {
+
+                        var mailOptions = {
+                            to: data.emailid,
+                            subject: 'RightNow App Forgot Password Email'
+                        };
+
+                        emailFile.sendMail(mailOptions, "subscribe.ejs", {categoryname: data.categoryname,username:user.name}).
+                        then(function (response) {
+
+                            res = {
+                                status: true,
+                                message: "Subscribed Successfully and Mail Sent to the registered EmailId",
+                                result: [response]
+                            };
+
+                            resolve(res);
+
+
+                        }, function (err) {
+                            res = {
+                                status: false,
+                                message: "Mail Sending Failed",
+                                result: [err]
+                            };
+                            reject(res);
+
+                        });
+
+                    }, function (err) {
+                        res = {
+                            status: false,
+                            message: "Cannot be Subscribed",
+                            result: [err]
+                        };
+
+                        reject(res);
+
+                    });
+                }
+//
+
+            } else {
+                console.log("ppppppppp");
+                res = {
+                    status: false,
+                    message: "No User Found",
+                    result: [response]
+                };
+
+                reject(res);
+            }
+
+        }, function (err) {
+            res = {
+                status: false,
+                message: "Subscription Failed",
+                result: [err]
+            };
+
+            reject(res);
+
+        });
+
+    })
+
+};
+var unSubscribe = function (req) {
+    return new Promise(function (resolve, reject) {
+
+        console.log("Unsubscribe");
+        var res;
+
+        var data = {emailid: req.params.emailid, categoryname: req.body.categoryname};
+
+        data.emailid = data.emailid.toLowerCase();
+
+
+        userModel.getUser(data).then(function (response) {
+            console.log("response", response);
+            console.log("data", data);
+
+            // return;
+
+            if (response) {
+
+                if (response.subscribed) {
+
+                    console.log('SUBSCRIBED');
+                    var user = response;
+
+                    for(var i=0;i<user.subscribed.length;i++){
+                        if(user.subscribed[i]==data.categoryname){
+                          user.subscribed.splice(i,1);
+                        }
+                    }
+
+                    if(user.subscribed.length==0){
+                        delete user.subscribed;
+                    }
+
+                   console.log("updated user obj>>",user);
+
+                    userModel.updateUserAll(user).then(function (response) {
+
+                        var mailOptions = {
+                            to: data.emailid,
+                            subject: 'Service Unsubscribed Email'
+                        };
+
+                        emailFile.sendMail(mailOptions, "unsubscribe.ejs", {categoryname: data.categoryname,username:user.name}).
+                        then(function (response) {
+
+                            res = {
+                                status: true,
+                                message: "Unsubscribed Successfully and Mail Sent to the registered EmailId",
+                                result: [response]
+                            };
+
+                            resolve(res);
+
+
+                        }, function (err) {
+                            res = {
+                                status: false,
+                                message: "Mail Sending Failed",
+                                result: [err]
+                            };
+                            reject(res);
+
+                        });
+
+                    }, function (err) {
+                        res = {
+                            status: false,
+                            message: "Cannot be Subscribed",
+                            result: [err]
+                        };
+
+                        reject(res);
+
+                    });
+
+
+                }else{
+                    res = {
+                        status: false,
+                        message: "Not Subscribed",
+                        result: [response]
+                    };
+
+                    reject(res);
+                }
+//
+
+            } else {
+
+                res = {
+                    status: false,
+                    message: "No User Found",
+                    result: [response]
+                };
+
+                reject(res);
+            }
+
+        }, function (err) {
+            res = {
+                status: false,
+                message: "Unsubscription Failed",
+                result: [err]
+            };
+
+            reject(res);
+
+        });
+
+    })
+
+};
+
+
 module.exports = {
 
     addUser: addUser,
     changePassword: changePassword,
-    forgotPassword:forgotPassword,
+    forgotPassword: forgotPassword,
     getUser: getUser,
-    loginUser:loginUser
+    loginUser: loginUser,
+    subscribe: subscribe,
+    unSubscribe: unSubscribe
+
 };

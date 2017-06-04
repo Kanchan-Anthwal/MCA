@@ -11,6 +11,8 @@ global.configFile=require('./utilities/config.json');
 var MongoClient=require('mongodb').MongoClient;
 var user=require('./routes/user');
 var category=require('./routes/category');
+var post=require('./routes/post');
+
 
 var os = require('os');
 var fs = require('fs');
@@ -60,6 +62,8 @@ app.use(bodyParser.urlencoded({
 
 app.use("/user",user);
 app.use("/category",category);
+app.use("/post",post);
+
 
 
 app.listen(configFile.port, function() {
