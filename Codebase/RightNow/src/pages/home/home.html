@@ -1,12 +1,10 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      Member Area
+     Home
     </ion-title>
     <ion-buttons >
-      <button ion-button (click)="changePassword()">
-        Change Password
-      </button>
+
 
       <button ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
@@ -18,13 +16,26 @@
 <ion-content class="home" padding>
   <h3>Welcome insidaaae, {{emailid}}</h3>
 
+  <button ion-button (click)="changePassword()">
+    Change Password
+  </button>
+{{showAddCategoryBtn}}
+  <button ion-button [hidden]="hideAddCategoryBtn" (click)="addCategory()">
+    Add Category
+  </button>
+  <button ion-button [hidden]="hideAddCategoryBtn" (click)="deleteCategory()">
+    Delete Category
+  </button>
 
-<ion-scroll style="height: 2000px">
-{{myItems}}
-  <ion-list *ngFor="let type of myItems">
+  <ion-label>Categories{{categoriesList}}</ion-label>
+
+  <ion-scroll style="height: 2000px">
+    <ion-label [hidden]="categoriesList.length>0">No Categories Foundpppppppppppppp</ion-label>
+
+    <ion-list [hidden]="categoriesList.length<=0" *ngFor="let key of keys">
   <ion-item>
     <!--<ion-icon name="leaf" item-left></ion-icon>-->
-    {{type}}
+    <ion-label (click)="goToCategoryDetalisPage(categoriesList[key].name)" >{{categoriesList[key].name}}</ion-label>
     <!--<ion-icon name= item-right></ion-icon>-->
   </ion-item>
 </ion-list>

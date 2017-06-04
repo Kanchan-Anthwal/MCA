@@ -18,7 +18,7 @@ var getAllCategory = function (req) {
                 res = {
                     status: true,
                     message: "Categories Fetched Successfully",
-                    result: [response]
+                    result: response
                 };
                 resolve(res);
             } else {

@@ -14,13 +14,13 @@
 
 
 <ion-content class="login-content" padding>
-<ion-row class="logo-row">
+<!--<ion-row class="logo-row">
   <ion-col></ion-col>
   <ion-col width-67>
     <img src="http://placehold.it/300x200"/>
   </ion-col>
   <ion-col></ion-col>
-</ion-row>
+</ion-row>-->
 
 
 <div class="login-box">
@@ -30,12 +30,24 @@
         <ion-list inset>
 
           <ion-item>
-            <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.emailid" required></ion-input>
+            <ion-input type="text" placeholder="Emailkk" name="email" [(ngModel)]="registerCredentials.emailid" required></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+        <!--  <ion-item>{{showPasswordIsChecked}}kkkkkk
+            <ion-input type="password" ng-if="!showPasswordIsChecked" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+            <ion-input type="text" ng-if="showPasswordIsChecked" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
           </ion-item>
+          <ion-checkbox>Show password</ion-checkbox>-->
+          <ion-item>
+          <ion-input #input type="password" placeholder="Password" name="password"
+                     [(ngModel)]="registerCredentials.password" required></ion-input>
+            </ion-item>
+              <!--<ion-item>-->
+          <!--<button class="btn" type="button" value=" Show Password "(click)="showPassword(input)"></button>-->
+          <!--</ion-item>-->
+          <button ion-button class="register-btn"  block clear (click)="showPassword(input)">{{showHidePassLabel}}</button>
+
+
 
         </ion-list>
       </ion-col>

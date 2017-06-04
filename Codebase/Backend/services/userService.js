@@ -12,7 +12,7 @@ var addUser = function (req) {
     return new Promise(function (resolve, reject) {
 
         console.log("cmng here...");
-        var data = {emailid: req.body.emailid, password: utility.AutoGenerateId()};
+        var data = {emailid: req.body.emailid, name:req.body.name,password: utility.AutoGenerateId()};
         var res;
 
         userModel.addUser(data).then(function (response) {

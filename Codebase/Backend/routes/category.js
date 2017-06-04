@@ -36,7 +36,7 @@ router.get('/:name',function (req,res) {
 
 router.delete('/:name',function (req,res) {
 
-    console.log("Delete Categry Api called>>>",req.params);
+    console.log("Delete Categry Api called>>>",req.params.name);
     categoryService.deleteCategoryByName(req).then(function(response){
 
         res.status(200).json(response);

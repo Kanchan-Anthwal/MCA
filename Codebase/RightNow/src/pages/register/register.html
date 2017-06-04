@@ -13,8 +13,16 @@
         <ion-col>
           <ion-list inset>
 
+            <ion-label>Name</ion-label>
+
             <ion-item>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.emailid" required></ion-input>
+             <ion-input type="text" placeholder="name" name="name"  maxlength="20" [(ngModel)]="registerCredentials.name" required></ion-input>
+           </ion-item>
+
+            <ion-label>Email</ion-label>
+
+            <ion-item>
+              <ion-input type="email" placeholder="Email" name="email" maxlength="50" [(ngModel)]="registerCredentials.emailid" required></ion-input>
             </ion-item>
 
            <!-- <ion-item>

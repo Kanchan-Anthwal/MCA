@@ -15,14 +15,14 @@ MongoClient.connect(config.dbAddress+":"+config.dbPort+"/"+config.dbName, functi
         userCollection=database.collection(config.userCollection);
 
         //Below line is used to create index
-        // userCollection.createIndex({password:""},{unique:true});
+        userCollection.createIndex({emailid:""},{unique:true});
 
     }
 });
 var DbUtility={
          add:function(data){
               return new Promise(function(resolve,reject){
-              console.log("modelsssss");
+              console.log("data INsertion MODEL",data);
           userCollection.insert(data, function(err, result) {
                 if(err){
                     reject(err);

@@ -11,6 +11,7 @@ import { MyApp } from './app.component';
 
 //Added
 import {AuthService} from '../providers/auth-service';
+import {CategoryService} from '../providers/category-service';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {AuthService} from '../providers/auth-service';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    CategoryService
   ]
 })
 export class AppModule {}

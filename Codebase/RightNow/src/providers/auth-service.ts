@@ -12,11 +12,15 @@ export class User{
 
   name: string;
   emailid: string;
+  password:string;
+  subscribed:any;
 
-  constructor(name: string,emailid:string){
+  constructor(name: string,emailid:string,password:string,subscribed:any){
 
     this.name=name;
     this.emailid=emailid;
+    this.password=password;
+    this.subscribed=subscribed;
   }
 }
 
@@ -42,13 +46,14 @@ export class AuthService {
 
         var access;
         let url = AppSettings.USER_LOGIN+credentials.emailid+"/"+credentials.password;
-        let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
 
         this.http.get(url).map(res => res.json()).subscribe(
           data => {
             console.log("login api response, data=>",data);
             if (data.status){
-              this.currentUser = new User(data.username, data.result[0].emailid);
+              this.currentUser = new User(data.result[0].name, data.result[0].emailid,data.result[0].password,
+                data.result[0].subscribed);
               access = true;
             }else{
               access=false;
@@ -79,6 +84,7 @@ export class AuthService {
 
         let url = AppSettings.USER_REGISTER;
         var access;
+        credentials.subscribed=[];
         let body = JSON.stringify(credentials);
         // let headers = new Headers({ 'Content-Type': 'application/json' });
 
@@ -93,7 +99,7 @@ export class AuthService {
             }else{
               access=false;
             }
-            observer.next(access);
+            observer.next(data);
             observer.complete();
           },
 
@@ -223,6 +229,12 @@ export class AuthService {
   public getUserInfo() : User {
     return this.currentUser;
   }
+  public setUserInfo(password){
+    console.log("setting password after change>>>>>>",password);
+    this.currentUser.password=password;
+
+  }
+
 
   public logout() {
     return Observable.create(observer => {
