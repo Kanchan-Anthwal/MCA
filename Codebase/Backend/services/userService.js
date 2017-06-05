@@ -542,7 +542,44 @@ var unSubscribe = function (req) {
 
 };
 
+var invite=function(req){
 
+    return new Promise(function (resolve, reject) {
+
+        if(req.body && req.params.emailid && req.params.name){
+        var mailOptions = {
+            to: req.body.invitetoemailid,
+            subject: 'RightNow App Invitation Email'
+        };
+
+        var invitationData={toemail:req.body.invitetoemailid,fromemail:req.params.emailid,fromname:req.params.name};
+        console.log("invitation data",invitationData);
+        // return;
+
+        emailFile.sendMail(mailOptions, "invitation.ejs", invitationData).then(function (response) {
+            console.log("Send email");
+
+            res = {
+                status: true,
+                message: "Invitation Email Sent to the Invited EmailId",
+                result: [response]
+            };
+
+            resolve(res);
+
+
+        }, function (err) {
+            res = {
+                status: false,
+                message: "Mail Sending Failed",
+                result: [err]
+            };
+            reject(res);
+
+        });
+    }
+})
+}
 module.exports = {
 
     addUser: addUser,
@@ -551,6 +588,7 @@ module.exports = {
     getUser: getUser,
     loginUser: loginUser,
     subscribe: subscribe,
-    unSubscribe: unSubscribe
+    unSubscribe: unSubscribe,
+    invite:invite
 
 };

@@ -111,7 +111,9 @@ export class HomePage {
   deleteCategory(){
     this.nav.push('DeleteCategoryPage');
 }
-
+  invite(){
+    this.nav.push('InvitationPage');
+  }
   public onItemTap(args) {
     //console.log("------------------------ ItemTapped: " + args.index);
   }

@@ -1,31 +1,31 @@
 import { Component } from '@angular/core';
 // import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {NavController,NavParams,AlertController,LoadingController,Loading,IonicPage} from 'ionic-angular';
-import  { PostService } from '../../providers/post-service';
+import  { AuthService } from '../../providers/auth-service';
 
 
 /**
- * Generated class for the AddPostPage page.
+ * Generated class for the InvitationPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
-@IonicPage({name:'AddPostPage'})
+@IonicPage({name:'InvitationPage'})
 @Component({
-  selector: 'page-add-post',
-  templateUrl: 'addpost.html',
+  selector: 'page-invitation',
+  templateUrl: 'invitation.html',
 })
-export class AddPostPage {
+export class InvitationPage {
 
   loading: Loading;
   data='';
   categoryName='';
+  toemailid='';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private post:PostService,
+  constructor(public navCtrl: NavController, public navParams: NavParams,private auth:AuthService,
               private alertCtrl: AlertController,private loadingCtrl: LoadingController) {
 
     this.categoryName=navParams.data;
-    console.log("categoryname:>>",this.categoryName);
 
   }
   showLoading() {
@@ -56,8 +56,8 @@ export class AddPostPage {
   addPost(){
     this.showLoading();
 
-console.log("add post add categoryname>>>",this.categoryName);
-    this.post.createPost(this.data,this.categoryName).subscribe(response => {
+
+    this.auth.invite(this.toemailid).subscribe(response => {
       console.log("add post.ts>>>>//////////////////////////",response);
       if (response.status){
         this.showPopup("Success", response.message);

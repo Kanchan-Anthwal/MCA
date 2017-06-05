@@ -26,19 +26,6 @@ var DbUtility={
         return new Promise(function(resolve,reject){
 
             console.log("find model>>>>");
-         /*   categoryCollection.find(function(err, result) {
-
-                console.log("find model err>>>>",err,"********",result);
-
-                if(err){
-                    reject(err);
-                }
-                else{
-                    resolve(result);
-                }
-
-            });*/
-
 
          categoryCollection.find().toArray(function (err,result) {
 

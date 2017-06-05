@@ -38,9 +38,28 @@ var DbUtility={
 
     },
 
+    findAll:function(categoryname){
+        console.log(">>>werty>>>>>");
 
+        return new Promise(function(resolve,reject){
+
+            console.log("find model>>>>");
+
+            postCollection.find({categoryname:categoryname}).toArray(function (err,result) {
+
+                if(err){
+                    reject(err);
+                }else{
+                    console.log("result>>>",result);
+                    resolve(result);
+                }
+            })
+        });
+
+    },
 }
 module.exports={
-    createPost: DbUtility.add
+    createPost: DbUtility.add,
+    getAllPost:DbUtility.findAll
 
 };

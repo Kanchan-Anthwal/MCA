@@ -25,6 +25,24 @@ router.post('/register',function (req,res) {
 
 });
 
+
+router.post('/invite/:emailid/:name',function (req,res) {
+
+
+    userService.invite(req).then(function(response){
+
+        console.log("invite api...");
+
+        res.status(200).json(response);
+
+    },function(err){
+        res.status(500).json(err);
+    })
+
+});
+
+
+
 router.put('/subscribe/:emailid',function (req,res) {
 
 

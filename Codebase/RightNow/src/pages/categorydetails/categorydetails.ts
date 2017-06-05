@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+import { PlatformLocation } from '@angular/common'
+
 // import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import  { AuthService } from '../../providers/auth-service';
+import  { PostService } from '../../providers/post-service';
+
 import {NavController,NavParams,AlertController,LoadingController,Loading,IonicPage} from 'ionic-angular';
 
 
@@ -22,16 +26,27 @@ export class CategoryDetailsPage {
   currentUser;
   subscribedBtn=true;
   loading: Loading;
+  postList=[];
+  keys=[];
 
 
-  constructor(private nav: NavController, private auth: AuthService,private navParams:NavParams,
-              private alertCtrl: AlertController,private loadingCtrl: LoadingController) {
+  constructor(private nav: NavController, private auth: AuthService,private post:PostService,private navParams:NavParams,
+              private alertCtrl: AlertController,private loadingCtrl: LoadingController,location: PlatformLocation) {
     console.log("============navParams============",navParams);
 
     this.categoryName=navParams.data;
     this.currentUser=auth.getUserInfo();
     console.log("get ser info>>>",this.currentUser);
     console.log("this.currentUser.subscribed===undefined",this.currentUser.subscribed===undefined);
+
+    location.onPopState(() => {
+
+      this.getAllPost(this.categoryName);
+      // alert('pressed back!');
+
+    });
+
+
 
     if(this.currentUser.subscribed===undefined){
       this.subscribedBtn=true;
@@ -42,12 +57,33 @@ export class CategoryDetailsPage {
           this.subscribedBtn=false;
         }
       }
+
+      this.getAllPost(this.categoryName);
     }
 
   }
+
+  public getAllPost(categoryName){
+    this.showLoading();
+    this.post.getAll(categoryName).subscribe(response => {
+        if (response.status){
+
+          this.postList=response.result;
+          this.keys=Object.keys(response.result);
+          this.loading.dismiss();
+
+
+        } else {
+
+          this.loading.dismiss();
+        }
+        return response;
+      }
+    )
+  }
   createPost(){
 
-    this.nav.push('AddPostPage');
+    this.nav.push('AddPostPage',this.categoryName);
 
   }
   showPopup(title, text) {

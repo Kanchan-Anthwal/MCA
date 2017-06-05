@@ -29,8 +29,28 @@
     <button  ion-button end class="submit-btn" full type="submit"
             (click)="unSubscribe()">Unsubscribe</button>
 
+
+
     <button  ion-button end class="submit-btn" full type="submit"
              (click)="createPost()">Add Post</button>
+
+    <ion-label [hidden]="postList.length>0">No Post Found</ion-label>
+
+    <ion-list [hidden]="postList.length<=0" *ngFor="let key of keys">
+
+      <ion-item>
+        <!--<ion-icon name="leaf" item-left></ion-icon>-->
+        <ion-label>Posted By</ion-label>
+
+
+        <ion-label >{{postList[key].postedby}}</ion-label>
+
+        <ion-label>Post</ion-label>
+
+        <ion-label >{{postList[key].data}}</ion-label>
+        <!--<ion-icon name= item-right></ion-icon>-->
+      </ion-item>
+    </ion-list>
 
   </ion-content>
 

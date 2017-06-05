@@ -17,6 +17,19 @@ router.post('/create/:emailid/:categoryname',function (req,res) {
     })
 
 });
+
+router.get('/getall/:categoryname',function (req,res) {
+
+    console.log("Add POst Api called>>>",req.params);
+    postService.getAllPost(req).then(function(response){
+
+        res.status(200).json(response);
+
+    },function(err){
+        res.status(500).json(err);
+    })
+
+});
 // router.post('/',function (req,res) {
 //
 //     console.log("Add POst Api called>>>",req.params);

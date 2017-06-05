@@ -19,13 +19,17 @@
   <button ion-button (click)="changePassword()">
     Change Password
   </button>
-{{showAddCategoryBtn}}
   <button ion-button [hidden]="hideAddCategoryBtn" (click)="addCategory()">
     Add Category
   </button>
   <button ion-button [hidden]="hideAddCategoryBtn" (click)="deleteCategory()">
     Delete Category
   </button>
+  <button ion-button [hidden]="!hideAddCategoryBtn" (click)="invite()">
+ Send An Invitation
+</button>
+
+
 
   <ion-label>Categories{{categoriesList}}</ion-label>
 

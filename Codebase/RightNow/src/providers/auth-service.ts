@@ -149,6 +149,11 @@ export class AuthService {
             }else{
               access=false;
             }
+
+            if(this.currentUser.subscribed){
+              console.log("add in current user obj>>>>");
+              this.currentUser.subscribed.push(categoryName);
+            }
             observer.next(data);
             observer.complete();
           },
@@ -198,6 +203,12 @@ export class AuthService {
             }else{
               access=false;
             }
+            for(var i=0;i<this.currentUser.subscribed.length;i++){
+              if(this.currentUser.subscribed[i]==categoryName){
+                this.currentUser.subscribed.splice(i,1);//=false;
+              }
+            }
+
             observer.next(data);
             observer.complete();
           },
@@ -331,13 +342,60 @@ export class AuthService {
     this.currentUser.password=password;
 
   }
-  public setSubscription(subscribed){
-    this.currentUser.subscribed=subscribed;
+  // public setSubscription(subscribed){
+  //   this.currentUser.subscribed=subscribed;
+  //
+  // }
+
+  public invite(toemailid){
+    console.log("@@@@@@@@@@",toemailid);
+    if (toemailid === null) {
+      return Observable.throw("Please insert credentials");
+    } else {
+      // At this point store the credentials to your backend!
+      return Observable.create(observer=>{
+
+        let url = AppSettings.USER_INVITE+this.currentUser.emailid+"/"+this.currentUser.name;
+        var access;
+        let body = {invitetoemailid:toemailid};
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.post(url,body,{headers}).map(res=>res.json()).subscribe(
+          data=>{
+            console.log("forgotPassword>>>>",data);
+            if (data.status){
+              access = true;
+            }else{
+              access=false;
+            }
+            observer.next(data);
+            observer.complete();
+          },
+
+          error=>{
+            console.log("register  api response, error=>",JSON.parse(error._body));
+
+            observer.next(JSON.parse(error._body));
+            observer.complete();
+
+          }
+        );
+
+
+      });
+      // return Observable.create(observer => {
+      //
+      //
+      //
+      //   observer.next(true);
+      //   observer.complete();
+      // });
+    }
 
   }
-
-
-
   public logout() {
     return Observable.create(observer => {
       this.currentUser = null;

@@ -14,7 +14,7 @@ var createPost = function (req) {
 
         var res;
         var data = req.body;
-        data.emailid = req.params.emailid;
+        data.postedby = req.params.emailid;
         data.categoryname = req.params.categoryname;
 
         userModel.findBy({subscribed: data.categoryname}).then(function (response) {
@@ -25,7 +25,7 @@ var createPost = function (req) {
                 var emailList = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    if (response[i].emailid != data.emailid) {
+                    if (response[i].emailid != data.postedby) {
                         emailList.push(response[i].emailid);
                     }
 
@@ -36,7 +36,7 @@ var createPost = function (req) {
                     subject: 'Notification Email'
                 };
 
-                emailFile.sendMailToList(mailOptions, "notification.ejs", {from: data.emailid, post: data.post});
+            //    emailFile.sendMailToList(mailOptions, "notification.ejs", {from: data.emailid, post: data.post});
 
             }
 
@@ -76,11 +76,51 @@ var createPost = function (req) {
     })
 
 };
+var getAllPost = function (req) {
 
+    return new Promise(function (resolve, reject) {
+
+        console.log("cmng here..GET ALL POST.", req.params.categoryname);
+        var res;
+
+        postModel.getAllPost(req.params.categoryname).then(function (response) {
+            if (response) {
+                res = {
+                    status: true,
+                    message: "Post Fetched Successfully",
+                    result: response
+                };
+                resolve(res);
+            } else {
+                res = {
+                    status: false,
+                    message: "No Post Found",
+                    result: [response]
+                };
+                reject(res);
+            }
+
+
+
+        }, function (err) {
+            res = {
+                status: false,
+                message: "Post Cannot be Fetched ",
+                result: [err]
+            };
+
+            reject(res);
+
+        });
+
+    })
+
+};
 
 module.exports = {
 
 
-    createPost: createPost
+    createPost: createPost,
+    getAllPost:getAllPost
 
 };

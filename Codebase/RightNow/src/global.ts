@@ -20,6 +20,8 @@ export class AppSettings{
   public static USER_CHANGE_PASSWORD=AppSettings.USER+"changepass/";
   public static USER_SUBSCRIBE=AppSettings.USER+"subscribe/";
   public static USER_UNSUBSCRIBE=AppSettings.USER+"unsubscribe/";
+  public static USER_INVITE=AppSettings.USER+"invite/";
+
 
 
 
@@ -29,7 +31,8 @@ export class AppSettings{
   public static DELETE_CATEGORY=AppSettings.CATEGORY;
 
 
-  public static ADD_POST=AppSettings.POST+"create";
+  public static ADD_POST=AppSettings.POST+"create/";
+  public static GET_ALL_POST=AppSettings.POST+"getall/";
 
 
 
