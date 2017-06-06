@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {NavController,AlertController,LoadingController,Loading,IonicPage} from 'ionic-angular';
-import  { AuthService } from '../../providers/auth-service';
+import { AuthService } from '../../providers/auth-service';
 
 /**
  * Generated class for the Register page.
@@ -13,43 +13,37 @@ import  { AuthService } from '../../providers/auth-service';
   selector: 'page-register',
   templateUrl: 'register.html',
 })
-export class RegisterPage {
-  loading: Loading;
 
+export class RegisterPage {
+
+  loading: Loading;
   createSuccess = false;
   registerCredentials = { emailid: ''};
 
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController) {
 
-  public register() {
+  }
+
+  register() {
     this.showLoading();
     this.auth.register(this.registerCredentials).subscribe(response => {
-
-      console.log("register.ts>>>>",response);
         if (response.status){
-          console.log("response success>>register.ts",response);
-
            this.createSuccess = true;
           this.showPopup("Success", response.message);
 
-          // this.nav.push('LoginPage')
         } else {
-          console.log("falseeeee");
           this.createSuccess = false;
           this.showPopup("Error", response.message);
         }
       this.loading.dismiss();
-      }/*,
-      error => {
-        this.showPopup("Error", error);
-      });*/
+      }
     )
   }
+
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
-
       dismissOnPageChange: true
     });
     this.loading.present();

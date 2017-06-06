@@ -14,18 +14,18 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-content [hidden]="!subscribedBtn">
+<ion-content class="login-content" padding>
+  <div [hidden]="!subscribedBtn">
 
     <button  ion-button end class="submit-btn" full type="submit"
             (click)="subscribe()">Subscribe</button>
 
 
     <div>To Avail This Service Please Subscribe</div>
-  </ion-content>
+  </div>
 
 
-  <ion-content [hidden]="subscribedBtn">
+  <div [hidden]="subscribedBtn">
     <button  ion-button end class="submit-btn" full type="submit"
             (click)="unSubscribe()">Unsubscribe</button>
 
@@ -38,21 +38,28 @@
 
     <ion-list [hidden]="postList.length<=0" *ngFor="let key of keys">
 
-      <ion-item>
-        <!--<ion-icon name="leaf" item-left></ion-icon>-->
-        <ion-label>Posted By</ion-label>
-
-
-        <ion-label >{{postList[key].postedby}}</ion-label>
-
-        <ion-label>Post</ion-label>
-
-        <ion-label >{{postList[key].data}}</ion-label>
-        <!--<ion-icon name= item-right></ion-icon>-->
+      <ion-item class="item">
+      <ion-label>  <b>Posted By:rr </b> {{postList[key].postedby}}</ion-label>
       </ion-item>
+      <ion-item>
+        <ion-label> <b>Post:</b>{{postList[key].data}}</ion-label>
+      </ion-item>
+      <ion-label>======================================================</ion-label>
+
+        <!--<ion-icon name="leaf" item-left></ion-icon>-->
+        <!--<ion-label>Posted By</ion-label>-->
+
+
+        <!--<ion-label >{{postList[key].postedby}}</ion-label>-->
+
+        <!--<ion-label>Post</ion-label>-->
+
+        <!--<ion-label >{{postList[key].data}}</ion-label>-->
+        <!--<ion-icon name= item-right></ion-icon>-->
+
     </ion-list>
 
-  </ion-content>
+  </div>
 
 
 

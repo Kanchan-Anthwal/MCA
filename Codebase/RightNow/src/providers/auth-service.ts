@@ -245,7 +245,8 @@ export class AuthService {
 
         let url = AppSettings.USER_FORGOT_PASSWORD+emailid;
         var access;
-        let body = {};
+        let body={};
+
         // let headers = new Headers({ 'Content-Type': 'application/json' });
 
         let headers = new Headers();
@@ -294,7 +295,7 @@ export class AuthService {
 
         let url = AppSettings.USER_CHANGE_PASSWORD+this.currentUser.emailid;
         var access;
-        let body = {password:password};
+        let body = {password:password,name:this.currentUser.name};
         // let headers = new Headers({ 'Content-Type': 'application/json' });
 
         let headers = new Headers();

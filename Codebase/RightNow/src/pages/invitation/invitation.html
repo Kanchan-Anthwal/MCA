@@ -1,6 +1,6 @@
 
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar >
     <ion-title>Invitation</ion-title>
   </ion-navbar>
 </ion-header>
@@ -13,10 +13,10 @@
         <ion-col>
           <ion-list inset>
 
-            <ion-label>Email</ion-label>
+            <!--<ion-label>Email</ion-label>-->
 
             <ion-item>
-              <ion-input type="email" placeholder="Email" name="email" maxlength="50" [(ngModel)]="toemailid" required></ion-input>
+              <ion-input type="email" placeholder="Email" name="email" minlength="15" maxlength="50" [(ngModel)]="toemailid" required></ion-input>
             </ion-item>
 
 

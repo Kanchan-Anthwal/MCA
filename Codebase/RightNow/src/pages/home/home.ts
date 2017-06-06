@@ -31,7 +31,7 @@ export class HomePage {
               private loadingCtrl: LoadingController,location: PlatformLocation) {
     let info = this.auth.getUserInfo();
     //console.log("home page>>",info);
-    this.emailid = info['emailid'];
+    this.emailid =info['emailid'];
 
     location.onPopState(() => {
 

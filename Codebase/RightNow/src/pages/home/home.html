@@ -1,46 +1,47 @@
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar>
     <ion-title>
      Home
     </ion-title>
-    <ion-buttons >
-
-
-      <button ion-button (click)="logout()">
+    <ion-buttons end>
+      <button ion-button  (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="home" padding>
-  <h3>Welcome insidaaae, {{emailid}}</h3>
+<ion-content  class="home" padding>
+  <div style="margin: 10px 3px 10px 3px;
+  padding:20px 10px 20px 10px;
+  border-radius: 4px; background: #BB8FCE">
+  <h6 >Welcome <b>{{emailid}}</b></h6>
 
-  <button ion-button (click)="changePassword()">
+  <button class="btn" (click)="changePassword()">
     Change Password
   </button>
-  <button ion-button [hidden]="hideAddCategoryBtn" (click)="addCategory()">
+  <button class="btn" [hidden]="hideAddCategoryBtn" (click)="addCategory()">
     Add Category
   </button>
-  <button ion-button [hidden]="hideAddCategoryBtn" (click)="deleteCategory()">
+  <button class="btn" [hidden]="hideAddCategoryBtn" (click)="deleteCategory()">
     Delete Category
   </button>
-  <button ion-button [hidden]="!hideAddCategoryBtn" (click)="invite()">
+  <button class="btn" [hidden]="!hideAddCategoryBtn" (click)="invite()">
  Send An Invitation
 </button>
+  </div>
 
 
 
-  <ion-label>Categories{{categoriesList}}</ion-label>
+  <h5 style="align-self: center; margin-top: 20px; margin-left:20px;  font-size: 15px"><b>Categories</b></h5>
 
-  <ion-scroll style="height: 2000px">
-    <ion-label [hidden]="categoriesList.length>0">No Categories Foundpppppppppppppp</ion-label>
+  <ion-scroll direction = "xy" style = "width: 320px; height: 500px">
+    <ion-label [hidden]="categoriesList.length>0">No Categories Found</ion-label>
 
     <ion-list [hidden]="categoriesList.length<=0" *ngFor="let key of keys">
   <ion-item>
-    <!--<ion-icon name="leaf" item-left></ion-icon>-->
-    <ion-label (click)="goToCategoryDetalisPage(categoriesList[key].name)" >{{categoriesList[key].name}}</ion-label>
-    <!--<ion-icon name= item-right></ion-icon>-->
+
+    <ion-label  (click)="goToCategoryDetalisPage(categoriesList[key].name)" >{{categoriesList[key].name}}</ion-label>
   </ion-item>
 </ion-list>
 </ion-scroll>

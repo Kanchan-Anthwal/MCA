@@ -36,7 +36,7 @@ var createPost = function (req) {
                     subject: 'Notification Email'
                 };
 
-            //    emailFile.sendMailToList(mailOptions, "notification.ejs", {from: data.emailid, post: data.post});
+               emailFile.sendMailToList(mailOptions, "notification.ejs", {from: data.emailid, post: data.post});
 
             }
 

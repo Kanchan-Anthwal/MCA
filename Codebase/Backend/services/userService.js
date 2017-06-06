@@ -13,7 +13,7 @@ var addUser = function (req) {
 
         console.log("cmng here...");
         var data = {emailid: req.body.emailid, name: req.body.name, password: utility.AutoGenerateId()};
-        data.emailid = data.emailid.toLocaleLowerCase();
+        data.emailid = data.emailid.toLowerCase();
         var res;
 
         userModel.addUser(data).then(function (response) {
@@ -78,9 +78,9 @@ var changePassword = function (req) {
         console.log("cmng here..updateUser.");
         var res;
 
-        var data = {emailid: req.params.emailid, password: req.body.password};
+        var data = {emailid: req.params.emailid, password: req.body.password,name: req.body.name};
 
-        data.emailid = data.emailid.toLocaleLowerCase();
+        data.emailid = data.emailid.toLowerCase();
 
         userModel.updateUser(data).then(function (response) {
             console.log("response", response);
@@ -92,7 +92,7 @@ var changePassword = function (req) {
                     subject: 'RightNow App Change Password Email'
                 };
 
-                emailFile.sendMail(mailOptions, "changePassword.ejs", {changedPassword: data.password}).then(function (response) {
+                emailFile.sendMail(mailOptions, "changePassword.ejs", {changedPassword: data.password,name:data.name}).then(function (response) {
 
                     res = {
                         status: true,
@@ -144,7 +144,7 @@ var getUser = function (req) {
         console.log("cmng here..get.", req.params.emailid);
         var res;
         var data = {emailid: req.params.emailid};
-        data.emailid = data.emailid.toLocaleLowerCase();
+        data.emailid = data.emailid.toLowerCase();
 
         userModel.getUser(data).then(function (response) {
             if (response) {

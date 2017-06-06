@@ -1,6 +1,6 @@
 page-home {
   .home {
-    background: #56CA96;
+    background: #D2B4DE;
   }
 
   .odd {
@@ -9,5 +9,16 @@ page-home {
 
   .even {
     background-color: blue;
+  }
+  .btn{
+    background: #8E44AD;
+    color: #ffffff;
+margin-bottom: 10px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+    font-size: 12px;
+
+    padding-bottom:10px;
   }
 }
